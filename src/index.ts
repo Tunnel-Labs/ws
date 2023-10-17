@@ -1,1 +1,1 @@
-export { getNodeWebSocketConstructor } from "./utils/ws.js";
+export { getNodeWebSocketConstructor } from './utils/ws.js';

@@ -1,18 +1,22 @@
 {
 	"name": "@tunnel/ws",
+	"version": "1.0.1",
+	"root": true,
 	"type": "module",
 	"exports": "./src/index.ts",
 	"scripts": {
-		"build": "tsx ./scripts/build.ts"
+		"build": "tun ./scripts/build.ts"
 	},
 	"dependencies": {
 		"@tunnel/release": "^1.0.0",
 		"@tunnel/mkcert": "^1.0.2",
-		"get-monorepo-root": "^1.1.0",
+		"get-monorepo-root": "^1.2.0",
+		"which": "^4.0.0",
 		"ws": "^8.14.2"
 	},
 	"devDependencies": {
-		"tsx": "^3.12.10",
+		"@tunnel/tun": "^0.1.2",
+		"@types/which": "^3.0.0",
 		"@types/ws": "^8.5.5",
 		"typescript": "^5.2.2",
 		"lionconfig": "^3.1.1"

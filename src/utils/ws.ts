@@ -1,36 +1,35 @@
-import type { Release } from "@tunnel/release";
-import { getMkcertCerts } from "@tunnel/mkcert";
-import { getMonorepoDirpath } from "get-monorepo-root";
-import { WebSocket } from "ws";
+import type { Release } from '@tunnel/release';
+import { getMkcertCerts } from '@tunnel/mkcert';
+import { getMonorepoDirpath } from 'get-monorepo-root';
+import { WebSocket } from 'ws';
+import which from 'which';
 
 export async function getNodeWebSocketConstructor({
-  release,
+	release
 }: {
-  release: Release;
+	release: Release;
 }) {
-  let ws: any;
+	let ws: any;
 
-  if (release === "development") {
-    const cliHelpersString = "@t/cli-helpers";
-    const { cli } = await import(cliHelpersString);
-    const monorepoDirpath = getMonorepoDirpath();
-    if (monorepoDirpath === undefined) {
-      throw new Error("Could not find monorepo dirpath");
-    }
+	if (release === 'development') {
+		const monorepoDirpath = getMonorepoDirpath();
+		if (monorepoDirpath === undefined) {
+			throw new Error('Could not find monorepo dirpath');
+		}
 
-    const { ca, cert, key } = await getMkcertCerts({
-      mkcertBin: await cli.mkcert.getExecutablePath(),
-      monorepoDirpath,
-    });
+		const { ca, cert, key } = await getMkcertCerts({
+			mkcertBin: await which('mkcert'),
+			monorepoDirpath
+		});
 
-    ws = class CustomWebSocket extends WebSocket {
-      constructor(url: string) {
-        super(url, { ca, cert, key });
-      }
-    };
-  } else {
-    ws = WebSocket;
-  }
+		ws = class CustomWebSocket extends WebSocket {
+			constructor(url: string) {
+				super(url, { ca, cert, key });
+			}
+		};
+	} else {
+		ws = WebSocket;
+	}
 
-  return ws;
+	return ws;
 }
